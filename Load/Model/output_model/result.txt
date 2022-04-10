@@ -1,0 +1,52 @@
+player_champion:
+
+
+
+feature selection:
+    player: KDA, GPM, DPM
+    champion: GPM, DPM
+
+    before: 0.6699
+    after: 0.6752
+
+Pipeline(steps=[('scaler', StandardScaler()),
+                ('svm', SVC(C=0.1, degree=2, gamma=1, kernel='sigmoid'))])
+Pipeline(steps=[('scaler', StandardScaler()),
+                ('svm', SVC(C=0.1, degree=2, gamma=1, kernel='sigmoid'))])
+Pipeline(steps=[('scaler', StandardScaler()),
+                ('svm', SVC(C=0.1, gamma=0.5, kernel='poly'))])
+Pipeline(steps=[('scaler', StandardScaler()),
+                ('svm', SVC(C=1.5, degree=2, gamma=0.5))])
+Pipeline(steps=[('scaler', StandardScaler()),
+                ('svm', SVC(C=100, degree=2, gamma=0.5, kernel='linear'))])
+
+Process finished with exit code 0
+Pipeline(steps=[('scaler', StandardScaler()),
+                ('xgboost',
+                 GradientBoostingClassifier(max_depth=2, n_estimators=125))])
+
+
+Feature selection:
+accuracy:
+xgboost:  0.71296032311713
+svm_linear:  0.7129425041577571
+svm_poly:  0.6236012116892373
+svm_sigmoid:  0.6132691850795913
+
+Xgboost:  0.6683006535947712 auc:  0.6690619423637898
+Linear:   0.6830065359477124 auc:  0.6841869063010888
+Poly:  0.5751633986928104 auc:  0.5759133212946242
+Sigmoid:  0.5915032679738562 auc:  0.5919625589024117
+
+NON Feature Selection:
+
+xgboost:  0.7091530054644808
+svm_linear:  0.6982567118080304
+svm_poly:  0.667227963886909
+svm_sigmoid:  0.6595895699691138
+
+Xgboost:  0.6781045751633987 auc:  0.6789457937534059
+Linear:   0.6830065359477124 auc:  0.6832145490292455
+Poly:  0.6405228758169934 auc:  0.6413070191372734
+Sigmoid:  0.6503267973856209 auc:  0.6508168869607959
+
