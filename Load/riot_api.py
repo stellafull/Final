@@ -2,7 +2,7 @@ from riotwatcher import LolWatcher, ApiError
 import pandas as pd
 
 # golbal variables
-api_key = 'RGAPI-2e9b55d0-4d8e-4354-afcb-a55ea4f9d09b'  # riot api, need to generate everyday on its website
+api_key = 'RIOT-API-KEY'  # riot api, need to generate everyday on its website
 watcher = LolWatcher(api_key)
 my_region = 'KR'
 player_data = pd.read_csv("data/KR_Player_1000.csv")
