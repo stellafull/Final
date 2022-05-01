@@ -1,5 +1,6 @@
 import pandas as pd
 from joblib import load
+from sklearn import metrics
 from sklearn.metrics import plot_roc_curve
 from sklearn.model_selection import train_test_split
 import matplotlib.pyplot as plt
@@ -27,14 +28,55 @@ lsvc = load('output_model/after/svc_linear.joblib')
 psvc = load('output_model/after/svc_poly.joblib')
 ssvc = load('output_model/after/svc_sigmoid.joblib')
 
+
 # print("Xgboost: ", xgb.score(features_test, target_test), "auc: ", metrics.roc_auc_score(target_test, xgb.predict(features_test)))
 # print("Linear:  ", lsvc.score(features_test, target_test), "auc: ", metrics.roc_auc_score(target_test, lsvc.predict(features_test)))
 # print("Poly: ", psvc.score(features_test, target_test), "auc: ", metrics.roc_auc_score(target_test, psvc.predict(features_test)))
 # print("Sigmoid: ", ssvc.score(features_test, target_test), "auc: ", metrics.roc_auc_score(target_test, ssvc.predict(features_test)))
+
+y_pred = xgb0.predict_proba(features_test_after)[:, 1]
+fpr, tpr, _ = metrics.roc_curve(target_test_after, y_pred)
+auc = round(metrics.roc_auc_score(target_test_after, y_pred), 4)
+plt.plot(fpr,tpr,label="Gradient Boosting2, AUC="+str(auc))
+
+
+
+y_pred = xgb1.predict_proba(features_test)[:, 1]
+fpr, tpr, _ = metrics.roc_curve(target_test, y_pred)
+auc = round(metrics.roc_auc_score(target_test, y_pred), 4)
+plt.plot(fpr,tpr,label="Gradient Boosting1, AUC="+str(auc))
+
+
+y_pred = lsvc.predict_proba(features_test)[:, 1]
+fpr, tpr, _ = metrics.roc_curve(target_test, y_pred)
+auc = round(metrics.roc_auc_score(target_test, y_pred), 4)
+plt.plot(fpr,tpr,label="SVM with linear kernel, AUC="+str(auc))
+
+
+y_pred = psvc.predict_proba(features_test)[:, 1]
+fpr, tpr, _ = metrics.roc_curve(target_test, y_pred)
+auc = round(metrics.roc_auc_score(target_test, y_pred), 4)
+plt.plot(fpr,tpr,label="SVM with poly kernel, AUC="+str(auc))
+
+
+y_pred = ssvc.predict_proba(features_test)[:, 1]
+fpr, tpr, _ = metrics.roc_curve(target_test, y_pred)
+auc = round(metrics.roc_auc_score(target_test, y_pred), 4)
+plt.plot(fpr,tpr,label="SVM with sigmoid kernel, AUC="+str(auc))
+
+plt.legend()
+plt.title("Cross Validated ROC")
+plt.xlabel("False Positive Rate")
+plt.ylabel("True Positive Rate")
 # fig = plot_roc_curve(xgb0, features_test_after, target_test_after)
+# plt.plot(fig,label="Gradient Boosting2")
 # fig = plot_roc_curve(xgb1, features_test,target_test)
+# plt.plot(fig,label="Gradient Boosting1")
 # fig = plot_roc_curve(lsvc, features_test,target_test)
+# plt.plot(fig,label="SVM with linear kernel")
 # fig = plot_roc_curve(psvc, features_test,target_test)
+# plt.plot(fig,label="SVM with poly kernel")
 # fig = plot_roc_curve(ssvc, features_test,target_test)
+# plt.plot(fig,label="SVM with sigmoid kernel")
 # fig.figure_.suptitle("ROC curve comparison")
-# plt.show()
+plt.show()
