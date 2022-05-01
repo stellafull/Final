@@ -23,8 +23,11 @@ features_after = df[
      "red_player3_KDA", "red_player3_GPM", "red_player3_DPM", "red_champion3_DPM", "red_champion3_GPM",
      "red_player4_KDA", "red_player4_GPM", "red_player4_DPM", "red_champion4_DPM", "red_champion4_GPM",
      "red_player5_KDA", "red_player5_GPM", "red_player5_DPM", "red_champion5_DPM", "red_champion5_GPM"]]
-features_train, features_test, target_train, target_test = train_test_split(features_after, target, random_state=30)
+features_train_after, features_test_after, target_train_after, target_test_after = train_test_split(features_after,
+                                                                                                    target,
+                                                                                                    random_state=30)
 features_train, features_test, target_train, target_test = train_test_split(features, target, random_state=30)
+
 
 def xgboost_model(features, target, skf):
     xgb = Pipeline(
@@ -37,7 +40,18 @@ def xgboost_model(features, target, skf):
     return scores.mean()
 
 
-def svc_linear_model(features, target, skf):
+def xgboost_model_nan(features, target, skf):
+    xgb = Pipeline(
+        [('scaler', StandardScaler()), ('xgboost', GradientBoostingClassifier(max_depth=2, n_estimators=125))])
+    scores = cross_val_score(xgb, features, target, cv=skf, scoring='accuracy')
+    draw_cv_roc_curve(xgb, cv=skf, X=features, y=target, title='Cross Validated ROC')
+    draw_cv_pr_curve(xgb, cv=skf, X=features, y=target, title='Cross Validated ROC')
+    xgb.fit(features, target)
+    dump(xgb, "output_model/after/xgb.joblib")
+    return scores.mean()
+
+
+def svm_linear_model(features, target, skf):
     lsvc = Pipeline(
         [('scaler', StandardScaler()), ('svm', SVC(kernel='linear', C=100, degree=2, gamma=0.5, probability=True))])
     scores = cross_val_score(lsvc, features, target, cv=skf, scoring='accuracy')
@@ -58,18 +72,18 @@ def svc_poly_model(features, target, skf):
     return scores.mean()
 
 
-def svc_rbf_model(features, target, skf):
+def svm_rbf_model(features, target, skf):
     rsvc = Pipeline(
-        [('scaler', StandardScaler()), ('svm', SVC(kernel='rbf', C=1.5, degree=2, gamma=0.5, probability=True))])
+        [('scaler', StandardScaler()), ('svm', SVC(kernel='rbf', C=0.1, degree=2, gamma=0.01, probability=True))])
     scores = cross_val_score(rsvc, features, target, cv=skf, scoring='accuracy')
     draw_cv_roc_curve(rsvc, cv=skf, X=features, y=target, title='Cross Validated ROC')
     draw_cv_pr_curve(rsvc, cv=skf, X=features, y=target, title='Cross Validated ROC')
     rsvc.fit(features, target)
-    dump(rsvc, "output_model/svc_rbf.joblib")
+    dump(rsvc, "output_model/after/svc_rbf.joblib")
     return scores.mean()
 
 
-def svc_sigmoid_train(features, target, skf):
+def svm_sigmoid_train(features, target, skf):
     ssvc = Pipeline(
         [('scaler', StandardScaler()), ('svm', SVC(kernel='sigmoid', C=0.1, degree=2, gamma=1, probability=True))])
     scores = cross_val_score(ssvc, features, target, cv=skf, scoring='accuracy')
@@ -80,9 +94,10 @@ def svc_sigmoid_train(features, target, skf):
     return scores.mean()
 
 
-print("xgboost: ", xgboost_model(features_train, target_train, skf))
-print("svm_linear: ", svc_linear_model(features_train, target_train, skf))
+print("xgboost1: ", xgboost_model(features_train_after, target_train_after, skf))
+print("xgboost2: ", xgboost_model_nan(features_train, target_train, skf))
+print("svm_linear: ", svm_linear_model(features_train, target_train, skf))
 print("svm_poly: ", svc_poly_model(features_train, target_train, skf))
-print("svm_rbf: ", svc_rbf_model(features_train, target_train, skf))
-print("svm_sigmoid: ", svc_sigmoid_train(features_train, target_train, skf))
+print("svm_rbf: ", svm_rbf_model(features_train, target_train, skf))
+print("svm_sigmoid: ", svm_sigmoid_train(features_train, target_train, skf))
 # xgboost_model(features_train, target_train, skf)

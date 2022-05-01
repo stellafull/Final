@@ -109,8 +109,8 @@ def svc_linear_train(features, target, skf):
         {
             # "svm__kernel": ['linear', 'poly', 'rbf', 'sigmoid', 'precomputed'],
             "svm__degree": [2, 3],
-            "svm__C": [0.1, 0.25, 0.5, 1, 1.5, 2, 4, 8, 10, 16, 25, 36, 49, 64, 81, 100],
-            "svm__gamma": [0.5, 1, 2, 3, 4]
+            "svm__C": [0.01, 0.1, 0.25, 0.5, 1, 1.5, 2, 4, 8, 10, 16, 25, 32, 64, 100],
+            "svm__gamma": [0.01, 0.1, 0.25, 0.5, 1, 2, 3, 4]
         }
     ]
     grid = GridSearchCV(lsvc, param_grid, refit=True, verbose=2, cv=skf)
@@ -129,8 +129,8 @@ def svc_poly_train(features, target, skf):
     param_grid = [
         {
             "svm__degree": [2, 3],
-            "svm__C": [0.1, 0.25, 0.5, 1, 1.5, 2, 4, 8, 10, 16, 25, 32, 64, 100],
-            "svm__gamma": [0.5, 1, 2, 3, 4]
+            "svm__C": [0.01, 0.1, 0.25, 0.5, 1, 1.5, 2, 4, 8, 10, 16, 25, 32, 64, 100],
+            "svm__gamma": [0.01, 0.1, 0.25, 0.5, 1, 2, 3, 4]
         }
     ]
     grid = GridSearchCV(lsvc, param_grid, refit=True, verbose=2, cv=skf)
@@ -144,8 +144,8 @@ def svc_rbf_train(features, target, skf):
     param_grid = [
         {
             "svm__degree": [2, 3],
-            "svm__C": [0.1, 0.25, 0.5, 1, 1.5, 2, 4, 8, 10, 16, 25, 32, 64, 100],
-            "svm__gamma": [0.5, 1, 2, 3, 4]
+            "svm__C": [0.01, 0.1, 0.25, 0.5, 1, 1.5, 2, 4, 8, 10, 16, 25, 32, 64, 100],
+            "svm__gamma": [0.01, 0.1, 0.25, 0.5, 1, 2, 3, 4]
         }
     ]
     grid = GridSearchCV(lsvc, param_grid, refit=True, verbose=2, cv=skf)
@@ -159,8 +159,8 @@ def svc_sigmoid_train(features, target, skf):
     param_grid = [
         {
             "svm__degree": [2, 3],
-            "svm__C": [0.1, 0.25, 0.5, 1, 1.5, 2, 4, 8, 10, 16, 25, 32, 64, 100],
-            "svm__gamma": [0.5, 1, 2, 3, 4]
+            "svm__C": [0.01, 0.1, 0.25, 0.5, 1, 1.5, 2, 4, 8, 10, 16, 25, 32, 64, 100],
+            "svm__gamma": [0.01, 0.1, 0.25, 0.5, 1, 2, 3, 4]
         }
     ]
     grid = GridSearchCV(lsvc, param_grid, refit=True, verbose=2, cv=skf)
@@ -174,8 +174,8 @@ def svc_precomputed_train(features, target, skf):
     param_grid = [
         {
             "svm__degree": [2, 3],
-            "svm__C": [0.1, 0.25, 0.5, 1, 1.5, 2, 4, 8, 10, 16, 25, 32, 64, 100],
-            "svm__gamma": [0.5, 1, 2, 3, 4]
+            "svm__C": [0.01, 0.1, 0.25, 0.5, 1, 1.5, 2, 4, 8, 10, 16, 25, 32, 64, 100],
+            "svm__gamma": [0.01, 0.1, 0.25, 0.5, 1, 2, 3, 4]
         }
     ]
     grid = GridSearchCV(lsvc, param_grid, refit=True, verbose=2, cv=skf)

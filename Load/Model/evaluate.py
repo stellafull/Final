@@ -25,15 +25,16 @@ features_train_after, features_test_after, target_train_after, target_test_after
 xgb0 = load('output_model/xgb.joblib')
 xgb1 = load('output_model/after/xgb.joblib')
 lsvc = load('output_model/after/svc_linear.joblib')
+rsvc = load('output_model/after/svc_rbf.joblib')
 psvc = load('output_model/after/svc_poly.joblib')
 ssvc = load('output_model/after/svc_sigmoid.joblib')
 
-
-# print("Xgboost: ", xgb.score(features_test, target_test), "auc: ", metrics.roc_auc_score(target_test, xgb.predict(features_test)))
+# print("Xgboost1: ", xgb0.score(features_test_after, target_test_after), "auc: ", metrics.roc_auc_score(target_test, xgb.predict(features_test)))
+# print("Xgboost2: ", xgb1.score(features_test, target_test), "auc: ", metrics.roc_auc_score(target_test, xgb.predict(features_test)))
 # print("Linear:  ", lsvc.score(features_test, target_test), "auc: ", metrics.roc_auc_score(target_test, lsvc.predict(features_test)))
 # print("Poly: ", psvc.score(features_test, target_test), "auc: ", metrics.roc_auc_score(target_test, psvc.predict(features_test)))
 # print("Sigmoid: ", ssvc.score(features_test, target_test), "auc: ", metrics.roc_auc_score(target_test, ssvc.predict(features_test)))
-
+# print("rbf: ", rsvc.score(features_test, target_test), "auc: ", metrics.roc_auc_score(target_test, ssvc.predict(features_test)))
 y_pred = xgb0.predict_proba(features_test_after)[:, 1]
 fpr, tpr, _ = metrics.roc_curve(target_test_after, y_pred)
 auc = round(metrics.roc_auc_score(target_test_after, y_pred), 4)
@@ -58,6 +59,12 @@ fpr, tpr, _ = metrics.roc_curve(target_test, y_pred)
 auc = round(metrics.roc_auc_score(target_test, y_pred), 4)
 plt.plot(fpr,tpr,label="SVM with poly kernel, AUC="+str(auc))
 
+
+
+y_pred = rsvc.predict_proba(features_test)[:, 1]
+fpr, tpr, _ = metrics.roc_curve(target_test, y_pred)
+auc = round(metrics.roc_auc_score(target_test, y_pred), 4)
+plt.plot(fpr,tpr,label="SVM with rbf kernel, AUC="+str(auc))
 
 y_pred = ssvc.predict_proba(features_test)[:, 1]
 fpr, tpr, _ = metrics.roc_curve(target_test, y_pred)
